@@ -1,4 +1,4 @@
-import fs from 'fs/promises'
+import fs from "fs/promises"
 
 export default class ProductManager {
     constructor(path) {
@@ -6,7 +6,7 @@ export default class ProductManager {
     }
 
     async getProducts() {
-        const data = await fs.readFile(this.path, 'utf-8')
+        const data = await fs.readFile(this.path, "utf-8")
         return JSON.parse(data)
     }
 
@@ -19,8 +19,8 @@ export default class ProductManager {
         const products = await this.getProducts()
 
         const newId = products.length > 0
-        ? products[products.length - 1].id + 1
-        : 1
+            ? products[products.length - 1].id + 1
+            : 1
 
         const newProduct = {
             id: newId,
@@ -30,7 +30,12 @@ export default class ProductManager {
         }
 
         products.push(newProduct)
-        await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+
+        await fs.writeFile(
+            this.path,
+            JSON.stringify(products, null, 2)
+        )
+
         return newProduct
     }
 
@@ -46,7 +51,11 @@ export default class ProductManager {
             id: products[index].id
         }
 
-        await fs.writeFile(this.path, JSON.stringify(products, null, 2))
+        await fs.writeFile(
+            this.path,
+            JSON.stringify(products, null, 2)
+        )
+
         return products[index]
     }
 
@@ -56,7 +65,11 @@ export default class ProductManager {
 
         if (products.length === filtered.length) return false
 
-        await fs.writeFile(this.path, JSON.stringify(filtered, null, 2))
+        await fs.writeFile(
+            this.path,
+            JSON.stringify(filtered, null, 2)
+        )
+
         return true
     }
 }

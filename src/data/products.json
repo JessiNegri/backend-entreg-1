@@ -1,16 +1,5 @@
 [
   {
-    "id": 1,
-    "title": "Cenicero Terra",
-    "description": "Cenicero de cerámica artesanal con acabado natural y tonos tierra. Textura cálida y orgánica, cada pieza es única.",
-    "stock": 5,
-    "category": "ceniceros",
-    "price": 2000,
-    "image": "cenicero1.jpg",
-    "status": true,
-    "thumbnails": []
-  },
-  {
     "id": 2,
     "title": "Cenicero Minimal",
     "description": "Diseño simple y moderno en cerámica. Líneas limpias y equilibrio perfecto para espacios contemporáneos.",
@@ -350,5 +339,19 @@
     "image": "tetera7.jpg",
     "status": true,
     "thumbnails": []
+  },
+  {
+    "id": 33,
+    "status": true,
+    "thumbnails": [],
+    "title": "Cenicero terra",
+    "price": 2000
+  },
+  {
+    "id": 34,
+    "status": true,
+    "thumbnails": [],
+    "title": "Producto cualquiera",
+    "price": 2500
   }
 ]

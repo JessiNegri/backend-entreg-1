@@ -1,52 +1,63 @@
 import { Router } from 'express'
 import ProductManager from '../managers/ProductManager.js'
 
-const router = Router()
 const productManager = new ProductManager('./src/data/products.json')
 
-// GET todos los productos
-router.get('/', async (req, res) => {
-    const products = await productManager.getProducts()
-    res.json(products)
-})
+export default function productsRouter(io) {
+    const router = Router()
 
-// GET producto por id
-router.get('/:pid', async (req, res) => {
-    const product = await productManager.getProductById(req.params.pid)
+    // GET todos los productos
+    router.get('/', async (req, res) => {
+        const products = await productManager.getProducts()
+        res.json(products)
+    })
 
-    if (!product) {
-        return res.status(404).json({ error: 'Producto no encontrado' })
-    }
+    // GET producto por id
+    router.get('/:pid', async (req, res) => {
+        const product = await productManager.getProductById(req.params.pid)
 
-    res.json(product)
-})
+        if (!product) {
+            return res.status(404).json({ error: 'Producto no encontrado' })
+        }
 
-// POST nuevo producto
-router.post('/', async (req, res) => {
-    const product = await productManager.addProduct(req.body)
-    res.status(201).json(product)
-})
+        res.json(product)
+    })
 
-// PUT actualizar producto
-router.put('/:pid', async (req, res) => {
-    const updated = await productManager.updateProduct(req.params.pid, req.body)
+    // POST nuevo producto
+    router.post('/', async (req, res) => {
+        const product = await productManager.addProduct(req.body)
 
-    if (!updated) {
-        return res.status(404).json({ error: 'Producto no encontrado' })
-    }
+        // 🔥 avisamos a la vista realtime
+        io.emit("updateProducts")
 
-    res.json(updated)
-})
+        res.status(201).json(product)
+    })
 
-// DELETE eliminar producto
-router.delete('/:pid', async (req, res) => {
-    const deleted = await productManager.deleteProduct(req.params.pid)
+    // PUT actualizar producto
+    router.put('/:pid', async (req, res) => {
+        const updated = await productManager.updateProduct(req.params.pid, req.body)
 
-    if (!deleted) {
-        return res.status(404).json({ error: 'Producto no encontrado' })
-    }
+        if (!updated) {
+            return res.status(404).json({ error: 'Producto no encontrado' })
+        }
 
-    res.json({ message: 'Producto eliminado' })
-})
+        io.emit("updateProducts")
 
-export default router
+        res.json(updated)
+    })
+
+    // DELETE eliminar producto
+    router.delete('/:pid', async (req, res) => {
+        const deleted = await productManager.deleteProduct(req.params.pid)
+
+        if (!deleted) {
+            return res.status(404).json({ error: 'Producto no encontrado' })
+        }
+
+        io.emit("updateProducts")
+
+        res.json({ message: 'Producto eliminado' })
+    })
+
+    return router
+}
